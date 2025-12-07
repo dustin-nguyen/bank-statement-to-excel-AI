@@ -1,23 +1,12 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '');
-
-  return {
-    plugins: [react()],
-    // Base path for GitHub Pages deployment
-    base: '/bank-statement-to-excel-AI/',
-    define: {
-      // Map process.env.API_KEY to the environment variable loaded by Vite.
-      // Prioritize API_KEY, fall back to VITE_API_KEY.
-      'process.env.API_KEY': JSON.stringify(env.API_KEY || env.VITE_API_KEY)
-    },
-    build: {
-      outDir: 'dist',
-      assetsDir: 'assets',
-    }
-  };
+export default defineConfig({
+  plugins: [react()],
+  // Base path for GitHub Pages deployment
+  base: '/bank-statement-to-excel-AI/',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+  }
 });

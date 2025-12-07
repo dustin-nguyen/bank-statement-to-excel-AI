@@ -31,8 +31,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Pass the secret from GitHub repo settings to the build process
-          API_KEY: ${{ secrets.API_KEY }}
+          # VITE_ prefix is required for Vite to expose this to the browser
+          VITE_API_KEY: ${{ secrets.API_KEY }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

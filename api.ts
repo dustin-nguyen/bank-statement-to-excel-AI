@@ -3,17 +3,27 @@ import { RawExtractionResponse } from "./types";
 
 /**
  * Retrieves the API Key based on the current environment.
- * In Vite/Build process, process.env.API_KEY is replaced by the defined string.
+ * 1. Checks import.meta.env.VITE_API_KEY (Vite / GitHub Pages)
+ * 2. Checks process.env.API_KEY (Google AI Studio / Node)
  */
 const getApiKey = (): string => {
-  // Use process.env.API_KEY which is polyfilled by Vite's define config
-  const apiKey = process.env.API_KEY;
-
-  if (!apiKey) {
-    console.error("API Key is missing. Please check your .env file (Development) or Repository Secrets (Production).");
-    return "";
+  // 1. Vite / Browser Environment
+  // @ts-ignore - import.meta is standard in Vite but might not be in all TS configs
+  if (import.meta.env && import.meta.env.VITE_API_KEY) {
+    // @ts-ignore
+    return import.meta.env.VITE_API_KEY;
   }
-  return apiKey;
+
+  // 2. Fallback: Google AI Studio / Node Environment
+  // We check typeof process to avoid ReferenceError in pure browsers that don't have it polyfilled
+  // @ts-ignore
+  if (typeof process !== 'undefined' && process.env?.API_KEY) {
+    // @ts-ignore
+    return process.env.API_KEY;
+  }
+
+  console.error("API Key is missing. Please set VITE_API_KEY in your .env file or GitHub Secrets.");
+  return "";
 };
 
 const fileToGenerativePart = (file: File): Promise<{ inlineData: { data: string; mimeType: string } }> => {

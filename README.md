@@ -43,7 +43,7 @@ This project is configured to be deployed on GitHub Pages.
 3.  **Workflow Process**:
     *   Installs dependencies (`npm ci`).
     *   Builds the app using Vite (`npm run build`).
-    *   Injects the `API_KEY` into the build.
+    *   The workflow automatically maps `secrets.API_KEY` to `VITE_API_KEY` so the app can access it.
     *   Deploys the generated `dist/` folder to the `gh-pages` branch.
 
 ### Manual Setup (Local)
@@ -56,8 +56,9 @@ This project is configured to be deployed on GitHub Pages.
 2.  **Set up Environment**:
     Create a `.env` file in the root directory:
     ```
-    API_KEY=your_google_gemini_api_key
+    VITE_API_KEY=your_google_gemini_api_key
     ```
+    *(Note: The prefix `VITE_` is required for the variable to be exposed to the client-side code).*
 
 3.  **Run Development Server**:
     ```bash
