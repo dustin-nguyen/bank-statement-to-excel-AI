@@ -3,7 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main   # Trigger deploy on pushes to main
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -27,13 +30,13 @@ jobs:
       # 4️⃣ Build the project
       - name: Build
         run: npm run build
+        env:
+          # Pass the secret from GitHub repo settings to the build process
+          API_KEY: ${{ secrets.API_KEY }}
 
-      # 5️⃣ Deploy to gh-pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist       # Vite's build output folder
-          publish_branch: gh-pages
-          keep_files: true          # Keep existing files, no orphan branch
-          commit_message: "Deploy via GitHub Actions"
+          publish_dir: ./dist
+          force_orphan: true
