@@ -1,6 +1,20 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { RawExtractionResponse } from "./types";
+
+/**
+ * Retrieves the API Key based on the current environment.
+ * In Vite/Build process, process.env.API_KEY is replaced by the defined string.
+ */
+const getApiKey = (): string => {
+  // Use process.env.API_KEY which is polyfilled by Vite's define config
+  const apiKey = process.env.API_KEY;
+
+  if (!apiKey) {
+    console.error("API Key is missing. Please check your .env file (Development) or Repository Secrets (Production).");
+    return "";
+  }
+  return apiKey;
+};
 
 const fileToGenerativePart = (file: File): Promise<{ inlineData: { data: string; mimeType: string } }> => {
   return new Promise((resolve, reject) => {
@@ -21,7 +35,9 @@ const fileToGenerativePart = (file: File): Promise<{ inlineData: { data: string;
 };
 
 export const analyzeDocument = async (file: File): Promise<RawExtractionResponse> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // Dynamically get the key
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
+  
   const filePart = await fileToGenerativePart(file);
 
   const response = await ai.models.generateContent({

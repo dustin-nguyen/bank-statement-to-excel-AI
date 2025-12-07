@@ -11,8 +11,9 @@ export default defineConfig(({ mode }) => {
     // Base path for GitHub Pages deployment
     base: '/bank-statement-to-excel-AI/',
     define: {
-      // Map process.env.API_KEY to the environment variable loaded by Vite
-      'process.env.API_KEY': JSON.stringify(env.API_KEY)
+      // Map process.env.API_KEY to the environment variable loaded by Vite.
+      // Prioritize API_KEY, fall back to VITE_API_KEY.
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || env.VITE_API_KEY)
     },
     build: {
       outDir: 'dist',
