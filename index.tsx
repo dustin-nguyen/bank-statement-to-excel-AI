@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ExtractionResult, RawExtractionResponse } from './types';
@@ -45,9 +44,9 @@ const App = () => {
       const processedData = processTransactions(combinedRawData);
       
       setResult(processedData);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError("Failed to process documents. Please ensure they are valid PDF bank statements.");
+      setError(err.message || "Failed to process documents. Please ensure they are valid PDF bank statements.");
     } finally {
       setIsProcessing(false);
     }
@@ -117,7 +116,7 @@ const App = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 flex-shrink-0">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
             </svg>
-            {error}
+            <span className="text-sm font-medium">{error}</span>
           </div>
         )}
 

@@ -1,5 +1,6 @@
 
 import { Transaction, ExtractionResult, RawExtractionResponse } from './types';
+import { EXCLUDED_PHRASES, EXCLUDED_PREFIXES } from './constants';
 
 /**
  * Converts ISO YYYY-MM-DD string to MM/DD format
@@ -15,32 +16,28 @@ export const formatDisplayDate = (isoDate: string): string => {
 
 /**
  * Processes raw transactions:
- * 1. Filters out specific excluded phrases
+ * 1. Filters out specific excluded phrases and prefixes defined in constants.ts
  * 2. Sorts both lists by date
  */
 export const processTransactions = (rawData: RawExtractionResponse): ExtractionResult => {
   const validTransactions: Transaction[] = [];
   const excludedTransactions: Transaction[] = [];
 
-  // Define phrases to filter out (case-insensitive)
-  const excludedPhrases = [
-    "payment thank you - web", 
-    "bp fuel", 
-    "kroger fuel",
-    "total wine"
-  ];
-
   if (rawData.transactions) {
     rawData.transactions.forEach(t => {
       const descriptionLower = t.description.toLowerCase();
       
       // Check if description includes any excluded phrase
-      const matchesPhrase = excludedPhrases.some(phrase => descriptionLower.includes(phrase));
+      const matchesPhrase = EXCLUDED_PHRASES.some(phrase => 
+        descriptionLower.includes(phrase.toLowerCase())
+      );
       
-      // Check if description strictly starts with "bp#"
-      const startsWithBpHash = descriptionLower.startsWith("bp#");
+      // Check if description strictly starts with any excluded prefix
+      const matchesPrefix = EXCLUDED_PREFIXES.some(prefix => 
+        descriptionLower.startsWith(prefix.toLowerCase())
+      );
 
-      if (matchesPhrase || startsWithBpHash) {
+      if (matchesPhrase || matchesPrefix) {
         excludedTransactions.push(t);
       } else {
         validTransactions.push(t);

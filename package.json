@@ -1,3 +1,4 @@
+
 {
   "name": "bank-statement-to-excel-ai",
   "version": "1.0.0",
@@ -9,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@google/genai": "^1.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "@google/genai": "^1.31.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

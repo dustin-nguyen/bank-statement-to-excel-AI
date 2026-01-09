@@ -25,7 +25,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onFilesChange, files
     setDragActive(false);
     
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const newFiles = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+      // Fix: Cast Array.from result to File[] to resolve 'Property type does not exist on type unknown' error
+      const newFiles = (Array.from(e.dataTransfer.files) as File[]).filter(f => f.type === 'application/pdf');
       // Append new files to existing ones
       onFilesChange([...files, ...newFiles]);
     }
