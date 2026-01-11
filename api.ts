@@ -101,13 +101,29 @@ const fileToGenerativePart = (file: File): Promise<{ inlineData: { data: string;
     reader.readAsDataURL(file);
   });
 };
-
+const getApiKey = (): string => {
+  // 1. Vite / Browser Environment
+  // @ts-ignore - import.meta is standard in Vite but might not be in all TS configs
+  if (import.meta.env && import.meta.env.VITE_API_KEY) {
+    // @ts-ignore
+    return import.meta.env.VITE_API_KEY;
+  }
+    // 2. Fallback: Google AI Studio / Node Environment
+  // We check typeof process to avoid ReferenceError in pure browsers that don't have it polyfilled
+  // @ts-ignore
+  if (typeof process !== 'undefined' && process.env?.API_KEY) {
+    // @ts-ignore
+    return process.env.API_KEY;
+  }
+  console.error("API Key is missing. Please set VITE_API_KEY in your .env file or GitHub Secrets.");
+    return "";
+};
 /**
  * Analyzes the bank statement by sending it to Gemini API directly.
  */
 export const analyzeDocument = async (file: File): Promise<RawExtractionResponse> => {
   // Initialize AI client with API key from environment
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
   // 1. Client-side preprocessing to optimize extraction
   const processedFile = await preprocessPdf(file);
