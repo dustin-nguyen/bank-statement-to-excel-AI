@@ -112,7 +112,6 @@ const getApiKey = (): string => {
   // We check typeof process to avoid ReferenceError in pure browsers that don't have it polyfilled
   // @ts-ignore
   if (typeof process !== 'undefined' && process.env?.API_KEY) {
-    // @ts-ignore
     return process.env.API_KEY;
   }
   console.error("API Key is missing. Please set VITE_API_KEY in your .env file or GitHub Secrets.");
