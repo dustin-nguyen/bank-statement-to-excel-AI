@@ -56,3 +56,5 @@ The app automatically filters out specific transactions. These are displayed in 
 *   **Columns**: Date, Description, Category, Amount, Flow.
 *   **Flow Column**: Represents the signed amount (Positive for Inflow, Negative for Outflow).
 *   **Total Row**: Features a "TOTAL NET" label and a dynamic Excel formula `=SUM(E2:E[n])`.
+
+## Prompt
