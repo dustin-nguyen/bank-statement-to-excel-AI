@@ -20,7 +20,6 @@ A modern React application that utilizes **Gemini** via a managed worker to pars
 
 *   **Frontend**: React, TypeScript, Vite
 *   **Styling**: Tailwind CSS (via CDN)
-*   **Extraction Layer**: Custom Gemini Worker Endpoint (`https://gemini-ephemeral-token.ducnrg.workers.dev/`)
 *   **Excel Generation**: SheetJS (`xlsx` library via CDN)
 *   **PDF Processing**: PDF-Lib & PDF.js (via CDN)
 
